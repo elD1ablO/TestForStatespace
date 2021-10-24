@@ -16,14 +16,16 @@ public class UnitBehavior : MonoBehaviour
         {
             target = GameObject.FindGameObjectWithTag("Turret").transform;
         }
-        
-        //Vector3 target = 
+                
     }
 
     // Update is called once per frame
     void Update()
     {    
-        transform.position = Vector3.MoveTowards(transform.position, target.transform.position, speed * Time.deltaTime);
-        
+        transform.position = Vector3.MoveTowards(transform.position, target.transform.position, speed * Time.deltaTime);        
+    }
+    private void OnCollisionEnter(Collision collision)
+    {
+        Destroy(gameObject);
     }
 }
