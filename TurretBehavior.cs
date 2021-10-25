@@ -18,8 +18,7 @@ public class TurretBehavior : MonoBehaviour
     public GameObject bulletPrefab;
     
     GameObject target;
-    Quaternion lookAtUnit;
-    bool gameOver = false;
+    Quaternion lookAtUnit;  
     
     
     private void OnCollisionEnter(Collision collision)
@@ -31,8 +30,9 @@ public class TurretBehavior : MonoBehaviour
             Debug.Log("Collision!! HP left = "+hitPoints);
             if (hitPoints < 1)
             {
-                gameOver = true;
+                
                 Destroy(gameObject);
+                FindObjectOfType<GameManager>().EndGame();
             }
         }
     }

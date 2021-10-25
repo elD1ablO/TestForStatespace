@@ -8,24 +8,26 @@ public class UnitBehavior : MonoBehaviour
 {
     Transform target;
     public float speed = 1f;
-    // Start is called before the first frame update
-    void Start()
+    
+    void Update()
     {
-        
         if (GameObject.FindGameObjectWithTag("Turret") != null)
         {
             target = GameObject.FindGameObjectWithTag("Turret").transform;
+            transform.position = Vector3.MoveTowards(transform.position, target.transform.position, speed * Time.deltaTime);
         }
-                
-    }
-
-    // Update is called once per frame
-    void Update()
-    {    
-        transform.position = Vector3.MoveTowards(transform.position, target.transform.position, speed * Time.deltaTime);        
+              
     }
     private void OnCollisionEnter(Collision collision)
     {
-        Destroy(gameObject);
+        if (collision.gameObject.tag == "Turret")
+        {
+            Destroy(gameObject);
+        }
+        else if(collision.gameObject.tag == "Bullet")
+        {
+            Destroy(gameObject);
+        }
+
     }
 }
