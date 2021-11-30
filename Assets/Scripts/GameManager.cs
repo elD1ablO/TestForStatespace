@@ -43,8 +43,5 @@ public class GameManager : MonoBehaviour
     {
         scoreText.text = ("Score: " + Time.timeSinceLevelLoad.ToString("0.0"));
     }
-    public void Restart()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }
+    
 }
