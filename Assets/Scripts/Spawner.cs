@@ -5,14 +5,8 @@ using UnityEngine;
 public class Spawner : MonoBehaviour
 {
 
-    public GameObject unit;
-    //Vector3 spawnPosition;
-    void Start()
-    {
-        
-    }
+    public GameObject unit;            
     
-    // Update is called once per frame
     void Update()
     {
         if (Input.GetMouseButtonDown(0))

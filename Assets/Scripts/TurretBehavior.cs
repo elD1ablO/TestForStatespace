@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class TurretBehavior : MonoBehaviour
 {
-    public float rotationSpeed = 10f;
-    public float range = 6f;
-    public int hitPoints = 3;
+    public float rotationSpeed = 80f;
+    private float range = 6f;
+    private int hitPoints = 3;
     
     float bulletForce = 2f;
     float fireRate = 1f;
@@ -32,13 +32,13 @@ public class TurretBehavior : MonoBehaviour
             {
                 
                 Destroy(gameObject);
-                FindObjectOfType<GameManager>().EndGame();
+                GameManager.instance.EndGame();
             }
         }
     }
 
    
-    void Update()
+    void FixedUpdate()
     {
         target = GameObject.FindGameObjectWithTag("Unit");
         if (target == null)
@@ -48,31 +48,16 @@ public class TurretBehavior : MonoBehaviour
 
         else if (target != null)
         {
-            float distanceToTurret = Vector3.Distance(transform.position, target.transform.position);
-            
-            if(range > distanceToTurret)
-            {
-                targetLocked = false;
-                Vector3 direction = target.transform.position - transform.position;
-                lookAtUnit = Quaternion.LookRotation(direction);
-                                    //Quaternion.Lerp
-                transform.rotation = Quaternion.RotateTowards(transform.rotation, lookAtUnit, rotationSpeed * Time.deltaTime);
-                if(transform.rotation == lookAtUnit)
-                {
-                    targetLocked = true;
-                    canShoot = true;                    
-                }              
+            LockOnTarget();
+        }
 
-            }
-        }                
-    }
-    void FixedUpdate()
-    {
         if (targetLocked && canShoot && Time.time > nextFire)
         {
             Shoot();
         }
     }
+
+    
     void Shoot()
     {        
         GameObject bullet = Instantiate(bulletPrefab, shootingPoint.position, shootingPoint.rotation);        
@@ -80,6 +65,26 @@ public class TurretBehavior : MonoBehaviour
         rb.AddForce(shootingPoint.forward * bulletForce, ForceMode.Impulse);
         canShoot = false;
         nextFire = Time.time + fireRate;
+    }    
+
+    void LockOnTarget()
+    {
+        float distanceToTurret = Vector3.Distance(transform.position, target.transform.position);
+
+        if (range > distanceToTurret)
+        {
+            targetLocked = false;
+            Vector3 direction = target.transform.position - transform.position;
+            lookAtUnit = Quaternion.LookRotation(direction);
+
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, lookAtUnit, rotationSpeed * Time.deltaTime);
+            if (transform.rotation == lookAtUnit)
+            {
+                targetLocked = true;
+                canShoot = true;
+            }
+
+        }
     }
     
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 
-public class UnitBehavior : MonoBehaviour
+public class UnitBehavior : Unit
 {
     Transform target;
     public float speed = 1f;
@@ -13,21 +13,13 @@ public class UnitBehavior : MonoBehaviour
     {
         if (GameObject.FindGameObjectWithTag("Turret") != null)
         {
-            target = GameObject.FindGameObjectWithTag("Turret").transform;
-            transform.position = Vector3.MoveTowards(transform.position, target.transform.position, speed * Time.deltaTime);
-        }
-              
+           SearchTarget();
+        }              
     }
-    private void OnCollisionEnter(Collision collision)
+    
+    public void SearchTarget()
     {
-        if (collision.gameObject.tag == "Turret")
-        {
-            Destroy(gameObject);
-        }
-        else if(collision.gameObject.tag == "Bullet")
-        {
-            Destroy(gameObject);
-        }
-
+        target = GameObject.FindGameObjectWithTag("Turret").transform;
+        transform.position = Vector3.MoveTowards(transform.position, target.transform.position, speed * Time.deltaTime);
     }
 }
